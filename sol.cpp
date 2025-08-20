@@ -25,7 +25,7 @@ void _print(string n) { cerr << n; }
 void _print(long long int n) { cerr << n; }
 void _print(double n) { cerr << n; }
 
-int MOD = 1e9 + 7;
+const long long MOD = 1e9 + 7;
 
 ll add(ll x, ll y)
 {
@@ -190,29 +190,40 @@ long long int sumOfArrEle(vector<int> v){
     }
     return res;
 }
-void solve()
+
+
+int solve(string str, int k)
 {
-    int n;
-    cin>>n;
 
-    vector<int> v(n);
-    for (int i = 0; i < n;i++){
-        cin >> v[i];
+    // count number of substring with distinct values <= k
+     // count number of substring with distinct values <= k-1
+    int l = 0;
+    int r = 0;
+    map<char, int> frq;
+    int n = str.length();
+    int maxCount = 0;
+    while (r < n)
+    {
+        frq[str[r]]++;//
+        while(frq.size() > k) {
+            frq[str[l]]--;
+            if (frq[str[l]] == 0)
+                frq.erase(str[l]);
+            l++;
+            // r++;
+        }
+        if(frq.size()<=k) {
+            int s = frq.size();
+            maxCount += r-l+1;
+            // cout << maxCount << l << r << endl;
+        }
+        r++;
     }
-
-    long long int c = sumOfSq(v);
-    long long int b = sumOfArrEle(v);
-    long long int a = (n * (n + 1)) / 2;
-    long long int d = (n * (n + 1) * (2 * n + 1)) / 6;
-
-    long long int missNum = ((((a - b) * (a - b)) + (d - c)) / (2 * (a - b)));
-    long long int duppNum = missNum - (a - b);
-
-    cout << " missing->" <<missNum << " duplicate->  " <<duppNum;
+    cout << maxCount;
 }
 
-int main()
-{
+    int main()
+    {
 #ifndef ONLINE_JUDGE
     freopen("error.txt", "w", stderr);
     freopen("input.txt", "r", stdin);
@@ -230,7 +241,17 @@ int main()
     t = 1;
     while (t--)
     {
-        solve();
-        cout << "\n";
+        int k;
+        cin >> k;
+        // vector<int> arr(n);
+        // for (int i = 0; i < n;i++) {
+        //     cin >> arr[i];
+        // }
+
+        std::string str;
+
+        cin >> str;
+
+        solve(str,k);
     }
 }
